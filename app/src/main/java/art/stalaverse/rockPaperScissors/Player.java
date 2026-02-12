@@ -18,6 +18,7 @@ public class Player {
 		return timesLost;
 	}
 	public double getWinRate() {
+		
 		return (double)timesWon/(timesWon+timesLost);
 	}
 	public Weapon getWeapon() {

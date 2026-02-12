@@ -2,7 +2,7 @@ package art.stalaverse.rockPaperScissors;
 
 import java.io.IOException;
 import java.util.Scanner;
-
+import java.util.Random;
 public class UserInterface {
 	private int lineSize;
 	private Player[] player;
@@ -40,25 +40,68 @@ public class UserInterface {
 		return choice;
 	}
 	public void printNewGame() {
+		int option=-1;
 		clearScreen();
-		for (int i=1;i<=2;i++) {
-			System.out.printf("Player %d username: ", i);
-			player[i-1].setNickname(reader.nextLine());
+		printLine();
+		System.out.println("[1] Player vs Player");
+		System.out.println("[2] Player vs Bot");
+		printLine();
+		do {
+			System.out.print("> ");
+			if (reader.hasNextInt()) {
+				option=reader.nextInt();
+			}
+			if (option!=1 && option !=2) {
+				System.out.println("Option doesn't exist!");
+			}
+		} while (option!=1 && option!=2);
+		reader.nextLine();
+		switch(option) {
+			case 1:
+				for (int i=1;i<=2;i++) {
+					System.out.printf("Player %d username: ", i);
+					player[i-1].setNickname(reader.nextLine());
+				}
+				break;
+			case 2:
+				System.out.print("Player 1 username: ");
+				player[0].setNickname(reader.nextLine());
+				player[1].setNickname("Bot");
 		}
 		for (int i=0;i<rounds;i++) {
 			for (int j=0;j<=1;j++) {
 				clearScreen();
 				System.out.println("It is " + player[j].getNickname() + "'s turn!");
-				System.out.print("Choose your weapon (R,P,S): ");
 				char ch;
-				do {
-					ch=Character.toUpperCase(reader.next().charAt(0));
-					reader.nextLine();
-					if (ch!='R' && ch!='P' && ch!='S') {
-						System.out.println("Option doesn't exist!");
-						System.out.print(": ");
+				if (j==1 && option==2) {
+					Random rand=new Random();
+					switch(rand.nextInt(3)) {
+						case 0:
+							ch='R';
+							break;
+						case 1:
+							ch='P';
+							break;
+						case 2:
+							ch='S';
+							break;
+						default:
+							ch='R';
+							break;
 					}
-				} while (ch!='R' && ch!='P' && ch!='S');
+				}
+				else {
+					System.out.print("Choose your weapon (R,P,S): ");
+					do {
+						ch=Character.toUpperCase(reader.next().charAt(0));
+						reader.nextLine();
+						if (ch!='R' && ch!='P' && ch!='S') {
+							System.out.println("Option doesn't exist!");
+							System.out.print(": ");
+						}
+					} while (ch!='R' && ch!='P' && ch!='S');
+				}
+				
 				switch(ch) {
 					case 'R':
 						player[j].setChoice(Weapon.ROCK);
