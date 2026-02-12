@@ -9,13 +9,16 @@ public class UserInterface {
 	private int choice;
 	private Scanner reader;
 	private int rounds;
-	private Object object;
 	public UserInterface(Player[] player) {
 		lineSize=60;
 		this.player = new Player[2];
 		this.reader=new Scanner(System.in);
 		this.rounds=3;
 		System.arraycopy(player, 0, this.player, 0, 2);
+	}
+	private void pause() {
+		System.out.println("Press Enter to continue...");
+		reader.nextLine();
 	}
 	private void printLine() {
 		String data="=".repeat(lineSize);
@@ -58,44 +61,43 @@ public class UserInterface {
 				} while (ch!='R' && ch!='P' && ch!='S');
 				switch(ch) {
 					case 'R':
-						player[j].setChoice(object.ROCK);
+						player[j].setChoice(Weapon.ROCK);
 						break;
 					case 'P':
-						player[j].setChoice(object.PAPER);
+						player[j].setChoice(Weapon.PAPER);
 						break;
 					case 'S':
-						player[j].setChoice(object.SCISSORS);
+						player[j].setChoice(Weapon.SCISSORS);
 						break;
 					default:
 						break;
 				}
 
 			}
-			if (player[0].getObject()==player[1].getObject()) {
-				System.out.println("Tie! Both players chose: " + player[0].getObject() + "!");
+			if (player[0].getWeapon()==player[1].getWeapon()) {
+				System.out.println("Tie! Both players chose: " + player[0].getWeapon() + "!");
 			}
-			else if (player[0].getObject()==object.ROCK && player[1].getObject()==object.SCISSORS){
+			else if (player[0].getWeapon()==Weapon.ROCK && player[1].getWeapon()==Weapon.SCISSORS){
 				player[0].incrementTimesWon();
 				player[1].incrementTimesLost();
-				System.out.println(player[0].getNickname() + " wins! " + player[0].getObject() + " beats " + player[1].getObject() + "!");
+				System.out.println(player[0].getNickname() + " wins! " + player[0].getWeapon() + " beats " + player[1].getWeapon() + "!");
 			}
-			else if (player[0].getObject()==object.PAPER && player[1].getObject()==object.ROCK) {
+			else if (player[0].getWeapon()==Weapon.PAPER && player[1].getWeapon()==Weapon.ROCK) {
 				player[0].incrementTimesWon();
 				player[1].incrementTimesLost();
-				System.out.println(player[0].getNickname() + " wins! " + player[0].getObject() + " beats " + player[1].getObject() + "!");
+				System.out.println(player[0].getNickname() + " wins! " + player[0].getWeapon() + " beats " + player[1].getWeapon() + "!");
 			}
-			else if (player[0].getObject()==object.SCISSORS && player[1].getObject()==object.PAPER) {
+			else if (player[0].getWeapon()==Weapon.SCISSORS && player[1].getWeapon()==Weapon.PAPER) {
 				player[0].incrementTimesWon();
 				player[1].incrementTimesLost();
-				System.out.println(player[0].getNickname() + " wins! " + player[0].getObject() + " beats " + player[1].getObject() + "!");
+				System.out.println(player[0].getNickname() + " wins! " + player[0].getWeapon() + " beats " + player[1].getWeapon() + "!");
 			}
 			else {
 				player[1].incrementTimesWon();
 				player[0].incrementTimesLost();
-				System.out.println(player[1].getNickname() + " wins! " + player[1].getObject() + " beats " + player[0].getObject() + "!");
+				System.out.println(player[1].getNickname() + " wins! " + player[1].getWeapon() + " beats " + player[0].getWeapon() + "!");
 			}
-			System.out.println("Press Enter to continue...");
-			reader.nextLine();
+			pause();
 		}
 		clearScreen();
 		if (player[0].getTimesWon()>player[1].getTimesWon()) {
@@ -109,7 +111,9 @@ public class UserInterface {
 		}
 		for (int i=0;i<=1;i++) {
 			System.out.println(player[i].getNickname() + "'s winrate is " + Math.round(player[i].getWinRate()*100) + "%");
+			player[i].reset();
 		}
+		pause();
 	}
 	
 
@@ -129,6 +133,7 @@ public class UserInterface {
 		for (String rule : rules) {
 			System.out.println(rule);
 		}
+		pause();
 	}
 	public void printMenu() {
 		clearScreen();
@@ -144,7 +149,9 @@ public class UserInterface {
 		printLine();
 		System.out.print(">");
 		do {
-			choice=reader.nextInt();
+			if (reader.hasNextInt()) {
+				choice=reader.nextInt();
+			}
 			reader.nextLine();
 			if (choice>3 || choice<1) {
 				System.out.println("Option doesn't exist, try again!");

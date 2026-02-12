@@ -1,5 +1,5 @@
 package art.stalaverse.rockPaperScissors;
 
-public enum Object {
+public enum Weapon {
 	ROCK, PAPER, SCISSORS
 }
