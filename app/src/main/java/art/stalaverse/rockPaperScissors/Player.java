@@ -4,6 +4,10 @@ public class Player {
 	private String nickname;
 	private int timesWon, timesLost;
 	private Object object;
+	public Player() {
+		this.timesWon=0;
+		this.timesLost=0;
+	}
 	public String getNickname() {
 		return nickname;
 	}
@@ -19,11 +23,11 @@ public class Player {
 	public Object getObject() {
 		return object;
 	}
-	public void setTimesWon(int timesWon) {
-		this.timesWon=timesWon;
+	public void incrementTimesWon() {
+		this.timesWon++;
 	}
-	public void setTimesLost(int timesLost) {
-		this.timesLost=timesLost;
+	public void incrementTimesLost() {
+		this.timesLost++;
 	}
 	public void setChoice(Object object) {
 		this.object=object;
